@@ -1,3 +1,64 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
+@import "@fontsource/geist/600.css";
+@import "@fontsource/geist/700.css";
+@import "@fontsource-variable/jetbrains-mono";
+
+@theme {
+  --font-sans: "Geist", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
+
+  --color-brand-50: #f5f5f5;
+  --color-brand-100: #e5e5e5;
+  --color-brand-200: #d4d4d4;
+  --color-brand-300: #a3a3a3;
+  --color-brand-400: #737373;
+  --color-brand-500: #525252;
+  --color-brand-600: #404040;
+  --color-brand-700: #262626;
+  --color-brand-800: #171717;
+  --color-brand-900: #0a0a0a;
+  
+  --color-border: #e5e5e5;
+  --color-bg-base: #ffffff;
+  --color-bg-muted: #f9f9f9;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-white text-brand-900 antialiased selection:bg-brand-200;
+  }
+  
+  /* Dense layout & engineering feel */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .card {
+    @apply bg-white border border-border rounded-none p-4;
+  }
+  
+  .input {
+    @apply w-full border border-border bg-white px-3 py-1.5 text-sm outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-none;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center border px-3 py-1.5 text-sm font-medium transition-none outline-none;
+  }
+  
+  .btn-primary {
+    @apply bg-brand-900 text-white border-brand-900 hover:bg-brand-800;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-brand-900 border-border hover:bg-brand-50;
+  }
+
+  .btn-danger {
+    @apply bg-red-50 text-red-700 border-red-200 hover:bg-red-100;
+  }
+}
