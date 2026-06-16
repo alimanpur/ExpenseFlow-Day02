@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
 
 cloudinary.config({
@@ -8,14 +7,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'expenseflow/receipts',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
-    transformation: [{ quality: 'auto', fetch_format: 'auto' }],
+// Use memory storage — upload buffer directly to Cloudinary in the controller.
+// This removes the multer-storage-cloudinary dependency which is incompatible with multer v2.
+export const uploadReceipt = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+    cb(null, allowed.includes(file.mimetype));
   },
 });
 
-export const uploadReceipt = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 export default cloudinary;

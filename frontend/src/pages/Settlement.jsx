@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { Plus, CheckCircle, Clock, History } from 'lucide-react';
@@ -22,8 +22,11 @@ export default function Settlement() {
   const { data: groups = [], isLoading: loadingGroups } = useQuery({
     queryKey: ['groups'],
     queryFn: groupService.listGroups,
-    onSuccess: (data) => { if (!selectedGroupId && data[0]?.id) setSelectedGroupId(data[0].id); },
   });
+
+  useEffect(() => {
+    if (!selectedGroupId && groups[0]?.id) setSelectedGroupId(groups[0].id);
+  }, [groups, selectedGroupId]);
 
   const activeGroupId = selectedGroupId || groups[0]?.id;
 

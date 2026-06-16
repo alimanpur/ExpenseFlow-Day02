@@ -36,11 +36,14 @@ export default function Settings() {
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: authService.getProfile,
-    onSuccess: (data) => {
-      setUser(data);
-      if (data?.settings?.notifications) setNotifications(data.settings.notifications);
-    },
   });
+
+  useEffect(() => {
+    if (profile) {
+      setUser(profile);
+      if (profile.settings?.notifications) setNotifications(profile.settings.notifications);
+    }
+  }, [profile, setUser]);
 
   const { register: regProfile, handleSubmit: hsProfile, formState: { errors: pErr }, reset: resetProfile } = useForm({
     resolver: zodResolver(profileSchema),

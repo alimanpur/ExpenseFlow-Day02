@@ -43,15 +43,18 @@ export default function Topbar() {
     return () => document.removeEventListener('mousedown', handler);
   }, [showPanel]);
 
-  useQuery({
+  const { data: notifData } = useQuery({
     queryKey: ['notifications'],
     queryFn: analyticsService.getNotifications,
     refetchInterval: 30_000,
-    onSuccess: (data) => {
-      setNotifications(data);
-      setUnreadCount(data.filter((n) => !n.read).length);
-    },
   });
+
+  useEffect(() => {
+    if (notifData) {
+      setNotifications(notifData);
+      setUnreadCount(notifData.filter((n) => !n.read).length);
+    }
+  }, [notifData, setNotifications, setUnreadCount]);
 
   const markReadMutation = useMutation({
     mutationFn: () => analyticsService.markNotificationsRead([]),

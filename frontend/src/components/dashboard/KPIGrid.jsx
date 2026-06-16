@@ -24,7 +24,7 @@ export default function KPIGrid() {
   const kpis = [
     {
       label: 'Monthly Throughput',
-      val: fmt(currentMonth * 100) === '$0.00' ? '$0.00' : `$${(currentMonth / 100).toFixed(2)}`,
+      val: `$${(currentMonth / 100).toFixed(2)}`,
       sub: delta != null ? `${delta > 0 ? '+' : ''}${delta}% vs last month` : 'Current month',
       icon: delta > 0 ? TrendingUp : TrendingDown,
       iconColor: delta > 0 ? 'text-red-500' : 'text-green-500',

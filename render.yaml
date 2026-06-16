@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: expenseflow-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # PORT is set automatically by Render — do NOT hardcode it here.
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      # CLIENT_URL: comma-separated list of allowed origins.
+      # *.vercel.app is auto-allowed in CORS config — only needed for custom domains.
+      - key: CLIENT_URL
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+    healthCheckPath: /health

@@ -1,15 +1,14 @@
-export const errorHandler = (err, req, res, next) => {
-  console.error('// Operational Pipeline Intercept Exception:', err.stack);
+export const errorHandler = (err, req, res, _next) => {
+  const status = err.statusCode || err.status || 500;
+  const message = err.message || 'Internal server error.';
 
-  const status = err.statusCode || 500;
-  const message = err.message || 'An unhandled exception collapsed the execution routine.';
-  
+  if (status >= 500) {
+    console.error(`[ExpenseFlow] ${req.method} ${req.path} → ${status}:`, err.stack || err.message);
+  }
+
   res.status(status).json({
     success: false,
-    error: {
-      status,
-      message,
-      code: err.code || 'INTERNAL_SERVER_ERROR'
-    }
+    message,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
